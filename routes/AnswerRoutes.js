@@ -7,6 +7,7 @@ import {
   authorizeStudent,
 } from "../middleware/Authenticator.js";
 import Answer from "../models/Answer.js";
+import cors from "cors";
 
 const router = express.Router();
 
@@ -42,6 +43,7 @@ router.post(
 // MENAMPILKAN SELURUH JAWABAN SISWA
 router.get(
   "/admin/get-all",
+  cors(),
   authenticateToken,
   authorizeAdminTeacher,
   AsyncError(async (req, res) => {
