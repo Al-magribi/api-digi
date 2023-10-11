@@ -1,13 +1,50 @@
 import { Box, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Data from "./Data";
 import Table from "./Table";
+import axios from "axios";
 
 const User = () => {
   const { students: users } = useSelector((state) => state.studentInGrade);
   const { detail: exam } = useSelector((state) => state.detailExam);
-  const { answers } = useSelector((state) => state.allAnswers);
+
+  const [answers, setAnswers] = useState([]);
+
+  const get_answer = async () => {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        "Content-Type": "application/json",
+      },
+      timeout: 100000, // Misalnya, atur batasan waktu menjadi 10 detik (10000 milidetik)
+    };
+
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_URL}/api/exam/answer/admin/get-all/${exam._id}`,
+        config
+      );
+
+      setAnswers(data);
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        // Permintaan dibatalkan karena melebihi batasan waktu
+        console.error("Permintaan melebihi batasan waktu.");
+      } else {
+        // Penanganan error lainnya
+        console.error("Terjadi error dalam permintaan:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (exam) {
+      get_answer();
+    }
+  }, [exam]);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -46,8 +83,8 @@ const User = () => {
           }}
         >
           <TextField
-            label="Cari Nama Siswa"
-            variant="outlined"
+            label='Cari Nama Siswa'
+            variant='outlined'
             fullWidth
             value={searchTerm}
             onChange={handleSearchChange}

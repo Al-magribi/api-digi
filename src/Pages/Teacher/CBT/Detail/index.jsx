@@ -33,7 +33,6 @@ const Teacher_DetailExam = () => {
   useEffect(() => {
     dispatch(getStudentInGrade(grade));
     dispatch(getDetailExam(id));
-    dispatch(getAnswers());
   }, [dispatch, grade, id]);
 
   useEffect(() => {
@@ -45,16 +44,8 @@ const Teacher_DetailExam = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(getAnswers());
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [dispatch]);
-
-  useEffect(() => {
     if (success) {
-      dispatch(getAnswers());
+      dispatch(getAnswers(exam?._id));
 
       toast.success(message);
     } else {

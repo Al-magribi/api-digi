@@ -23,13 +23,11 @@ const User = () => {
 
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_URL}/api/exam/answer/admin/get-all`,
+        `${import.meta.env.VITE_URL}/api/exam/answer/admin/get-all/${exam._id}`,
         config
       );
 
       setAnswers(data);
-
-      console.log(data);
     } catch (error) {
       if (axios.isCancel(error)) {
         // Permintaan dibatalkan karena melebihi batasan waktu

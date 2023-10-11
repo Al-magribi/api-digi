@@ -20,9 +20,7 @@ const Admin_DetailExam = () => {
 
   const dispatch = useDispatch();
 
-  const { detail: exam, detail_success } = useSelector(
-    (state) => state.detailExam
-  );
+  const { detail: exam } = useSelector((state) => state.detailExam);
 
   const { success, message, error } = useSelector((state) => state.essay);
 
@@ -47,7 +45,7 @@ const Admin_DetailExam = () => {
 
   useEffect(() => {
     if (success) {
-      dispatch(getAnswers());
+      dispatch(getAnswers(exam?._id));
 
       toast.success(message);
     } else {

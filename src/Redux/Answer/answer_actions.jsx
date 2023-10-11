@@ -87,7 +87,7 @@ export const getMyAnswer = () => async (dispatch) => {
   }
 };
 
-export const getAnswers = () => async (dispatch) => {
+export const getAnswers = (id) => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_ANSWER_REQ });
 
@@ -101,7 +101,7 @@ export const getAnswers = () => async (dispatch) => {
     };
 
     const { data } = await axiosUrl.get(
-      "/api/exam/answer/admin/get-all",
+      `/api/exam/answer/admin/get-all/${id}`,
       config
     );
 
