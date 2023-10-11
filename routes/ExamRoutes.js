@@ -55,7 +55,7 @@ router.post(
 router.get(
   "/get-all",
   authenticateToken,
-  authorizeAdmin,
+  authorizeAdminTeacher,
   AsyncError(async (req, res, next) => {
     try {
       const { name } = req.query || "";

@@ -11,7 +11,7 @@ const answerSchema = new Schema(
           ref: "Question",
           required: true,
         },
-        key: { type: String, required: true },
+        key: { type: String, required: false },
       },
     ],
     correct: { type: String, required: false },

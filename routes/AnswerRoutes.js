@@ -42,13 +42,12 @@ router.post(
 
 // MENAMPILKAN SELURUH JAWABAN SISWA
 router.get(
-  "/admin/get-all",
+  "/admin/get-all/:id",
   cors(),
   authenticateToken,
-  authorizeAdminTeacher,
   AsyncError(async (req, res) => {
     try {
-      const answers = await Answer.find();
+      const answers = await Answer.find({ exam: req.params.id });
 
       return res.status(200).json(answers);
     } catch (error) {

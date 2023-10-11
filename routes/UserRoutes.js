@@ -10,6 +10,7 @@ import ErrorHandler from "../middleware/ErrorHandler.js";
 import {
   authenticateToken,
   authorizeAdmin,
+  authorizeAdminTeacher,
 } from "../middleware/Authenticator.js";
 import fs from "fs";
 import Exam from "../models/Exam.js";
@@ -249,7 +250,7 @@ router.post(
 router.get(
   "/student/:id",
   authenticateToken,
-  authorizeAdmin,
+  authorizeAdminTeacher,
   AsyncError(async (req, res, next) => {
     try {
       const student = await User.findById(req.params.id);
