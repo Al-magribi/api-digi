@@ -325,6 +325,7 @@ export const resetUser = (examId, userId) => async (dispatch) => {
 
     dispatch({ type: RESET_USER_SUCCESS, payload: data.message });
   } catch (error) {
+    console.log(error);
     dispatch({ type: RESET_USER_FAIL, payload: error.message });
   }
 };

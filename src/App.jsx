@@ -48,6 +48,8 @@ import Teacher_Questions from "./Pages/Teacher/CBT/Questions";
 import Teacher_DetailExam from "./Pages/Teacher/CBT/Detail";
 import Payment_status from "./Pages/User/Payment/Status";
 
+import Playground from "./Playground";
+
 function App() {
   const dispatch = useDispatch();
 
@@ -77,93 +79,95 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path='/' element={<Home />} />
 
-        <Route path="/visi-misi" element={<VISI_MISI />} />
+        <Route path='/playground' element={<Playground />} />
 
-        <Route path="/ppdb" element={<PPDB />} />
+        <Route path='/visi-misi' element={<VISI_MISI />} />
 
-        <Route path="/feed" element={<Feed />} />
+        <Route path='/ppdb' element={<PPDB />} />
 
-        <Route path="/news" element={<News />} />
+        <Route path='/feed' element={<Feed />} />
 
-        <Route path="/:title" element={<Read_News />} />
+        <Route path='/news' element={<News />} />
 
-        <Route path="/library" element={<Library />} />
+        <Route path='/:title' element={<Read_News />} />
 
-        <Route path="/teachers" element={<Teachers />} />
+        <Route path='/library' element={<Library />} />
 
-        <Route path="/admin/login" element={<Admin />} />
+        <Route path='/teachers' element={<Teachers />} />
 
-        <Route path="/user/login" element={<User />} />
+        <Route path='/admin/login' element={<Admin />} />
+
+        <Route path='/user/login' element={<User />} />
 
         {/* ADMIN */}
-        <Route path="/admin-dashboard" element={<Dashboard />} />
+        <Route path='/admin-dashboard' element={<Dashboard />} />
 
-        <Route path="/admin-teachers" element={<Admin_Teachers />} />
+        <Route path='/admin-teachers' element={<Admin_Teachers />} />
 
-        <Route path="/admin-grade" element={<Admin_Grade />} />
+        <Route path='/admin-grade' element={<Admin_Grade />} />
 
-        <Route path="/admin-users" element={<Admin_Users />} />
+        <Route path='/admin-users' element={<Admin_Users />} />
 
-        <Route path="/admin-news" element={<Admin_News />} />
+        <Route path='/admin-news' element={<Admin_News />} />
 
-        <Route path="/admin-feeds" element={<Admin_Feeds />} />
+        <Route path='/admin-feeds' element={<Admin_Feeds />} />
 
-        <Route path="/admin-library" element={<Admin_Library />} />
+        <Route path='/admin-library' element={<Admin_Library />} />
 
-        <Route path="/admin-ebook/:title" element={<Read_ebook_admin />} />
+        <Route path='/admin-ebook/:title' element={<Read_ebook_admin />} />
 
-        <Route path="/admin-cbt" element={<Admin_CBT />} />
+        <Route path='/admin-cbt' element={<Admin_CBT />} />
 
         <Route
-          path="/admin/exam/:grade/:id/:subject/:name"
+          path='/admin/exam/:grade/:id/:subject/:name'
           element={<Admin_DetailExam />}
         />
 
-        <Route path="/admin-cbt/exam/:name/:id" element={<Questions />} />
+        <Route path='/admin-cbt/exam/:name/:id' element={<Questions />} />
 
-        <Route path="/admin-payment" element={<Admin_Payment />} />
+        <Route path='/admin-payment' element={<Admin_Payment />} />
 
-        <Route path="/admin-report" element={<Admin_Report />} />
+        <Route path='/admin-report' element={<Admin_Report />} />
 
-        <Route path="/admin-settings" element={<Admin_Setting />} />
+        <Route path='/admin-settings' element={<Admin_Setting />} />
 
-        <Route path="/admin-profile" element={<Admin_Profile />} />
+        <Route path='/admin-profile' element={<Admin_Profile />} />
 
         {/* TEACHER */}
-        <Route path="/teacher-dashboard" element={<Teacher_Dasboard />} />
+        <Route path='/teacher-dashboard' element={<Teacher_Dasboard />} />
 
-        <Route path="/teacher-library" element={<Teacher_Library />} />
+        <Route path='/teacher-library' element={<Teacher_Library />} />
 
-        <Route path="/teacher-ebook/:title" element={<Read_ebook_teacher />} />
+        <Route path='/teacher-ebook/:title' element={<Read_ebook_teacher />} />
 
-        <Route path="/teacher-cbt" element={<Teacher_Exam />} />
+        <Route path='/teacher-cbt' element={<Teacher_Exam />} />
 
         <Route
-          path="/teacher/exam/:grade/:id/:subject/:name"
+          path='/teacher/exam/:grade/:id/:subject/:name'
           element={<Teacher_DetailExam />}
         />
 
         <Route
-          path="/teacher-cbt/exam/:name/:id"
+          path='/teacher-cbt/exam/:name/:id'
           element={<Teacher_Questions />}
         />
 
         {/* STUDENT */}
-        <Route path="/student-dashboard" element={<User_Dashboard />} />
+        <Route path='/student-dashboard' element={<User_Dashboard />} />
 
-        <Route path="/student-cbt" element={<User_CBT />} />
+        <Route path='/student-cbt' element={<User_CBT />} />
 
-        <Route path="/student/exam/:name/:id" element={<Start_Exam />} />
+        <Route path='/student/exam/:name/:id' element={<Start_Exam />} />
 
-        <Route path="/student-library" element={<User_Library />} />
+        <Route path='/student-library' element={<User_Library />} />
 
-        <Route path="/student-ebook/:title" element={<Read_ebook_student />} />
+        <Route path='/student-ebook/:title' element={<Read_ebook_student />} />
 
-        <Route path="/student-payment" element={<User_Payment />} />
+        <Route path='/student-payment' element={<User_Payment />} />
 
-        <Route path="/status-payment" element={<Payment_status />} />
+        <Route path='/status-payment' element={<Payment_status />} />
       </Routes>
     </BrowserRouter>
   );

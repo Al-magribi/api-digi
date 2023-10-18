@@ -76,6 +76,7 @@ const Add = ({ open, close }) => {
   const [choice, setChoice] = useState("");
   const [essay, setEssay] = useState("");
   const [passing, setPassing] = useState("");
+  const [display, setDisplay] = useState("");
 
   useEffect(() => {
     const initialDate = setHours(setMinutes(new Date(), 0), 9);
@@ -100,6 +101,7 @@ const Add = ({ open, close }) => {
       choice: choice,
       essay: essay,
       passing: passing,
+      display: display,
     };
 
     dispatch(createExam(data));
@@ -118,6 +120,7 @@ const Add = ({ open, close }) => {
       setChoice("0");
       setEssay("0");
       setPassing("");
+      setDisplay("");
 
       dispatch({ type: CREATE_EXAM_RESET });
 

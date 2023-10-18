@@ -122,25 +122,31 @@ const Exams = () => {
                 </td>
 
                 <td>
-                  {answers?.map((answer) =>
-                    answer.exam._id === item._id
-                      ? Number(answer.scorePg).toFixed()
-                      : null
-                  )}
+                  {item.display === "yes"
+                    ? answers?.map((answer) =>
+                        answer.exam._id === item._id
+                          ? Number(answer.scorePg).toFixed()
+                          : null
+                      )
+                    : "Disembunyikan"}
                 </td>
                 <td>
-                  {answers?.map((answer) =>
-                    answer.exam._id === item._id
-                      ? Number(answer.scoreEssay).toFixed()
-                      : null
-                  )}
+                  {item.display === "yes"
+                    ? answers?.map((answer) =>
+                        answer.exam._id === item._id
+                          ? Number(answer.scoreEssay).toFixed()
+                          : null
+                      )
+                    : "Disembunyikan"}
                 </td>
                 <td>
-                  {answers?.map((answer) =>
-                    answer.exam._id === item._id
-                      ? Number(answer.finalScore).toFixed()
-                      : null
-                  )}
+                  {item.display === "yes"
+                    ? answers?.map((answer) =>
+                        answer.exam._id === item._id
+                          ? Number(answer.finalScore).toFixed()
+                          : null
+                      )
+                    : "Disembunyikan"}
                 </td>
 
                 <td>

@@ -23,9 +23,11 @@ const Edit = ({ open, close }) => {
 
   const { loading, detail: exam } = useSelector((state) => state.detailExam);
 
-  const { loading: updateLoading } = useSelector((state) => state.upDelExam);
+  const { loading: updateLoading, isUpdated } = useSelector(
+    (state) => state.upDelExam
+  );
 
-  const { teachers } = useSelector((state) => state.teachers);
+  const { userInfo: user } = useSelector((state) => state.userLogin);
   const { grades } = useSelector((state) => state.grades);
 
   const [hours, setHours] = useState("");
@@ -47,6 +49,7 @@ const Edit = ({ open, close }) => {
   const [choice, setChoice] = useState("0");
   const [essay, setEssay] = useState("0");
   const [passing, setPassing] = useState("");
+  const [display, setDisplay] = useState("");
 
   useEffect(() => {
     const initialDate = setHours(setMinutes(new Date(), 0), 9);
@@ -64,8 +67,13 @@ const Edit = ({ open, close }) => {
       setChoice(exam?.choice);
       setEssay(exam?.essay);
       setPassing(exam?.passing);
+      setDisplay(exam?.display);
     }
-  }, [exam]);
+
+    if (isUpdated) {
+      close();
+    }
+  }, [exam, isUpdated]);
 
   const updateHandler = (e) => {
     e.preventDefault();
@@ -83,6 +91,7 @@ const Edit = ({ open, close }) => {
       choice: choice,
       essay: essay,
       passsing: passing,
+      display: display,
     };
 
     dispatch(updateExam(exam?._id, data));
@@ -98,16 +107,26 @@ const Edit = ({ open, close }) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: { xs: 350, md: 400 },
+            height: 600,
+            overflow: "auto",
             bgcolor: "#ffff",
             boxShadow: 24,
             p: 2,
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
+            borderRadius: 2,
           }}
         >
           {loading || updateLoading ? (
-            <Loader />
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Loader />
+            </Box>
           ) : (
             <form
               style={{
@@ -119,35 +138,16 @@ const Edit = ({ open, close }) => {
               }}
               onSubmit={updateHandler}
             >
-              <FormControl required fullWidth sx={{ mb: 2 }}>
-                <InputLabel id="demo-simple-select-label">
-                  --Pilih Guru--
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={teacherId}
-                  label="--Pilih Guru--"
-                  onChange={(e) => setTeacherId(e.target.value)}
-                >
-                  {teachers?.map((teacher) => (
-                    <MenuItem key={teacher._id} value={teacher._id}>
-                      {teacher.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
               {/* TINGKAT */}
               <FormControl required fullWidth sx={{ mb: 2 }}>
-                <InputLabel id="demo-simple-select-label">
+                <InputLabel id='demo-simple-select-label'>
                   --Pilih Tingkat--
                 </InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
                   value={grade}
-                  label="--Pilih Guru--"
+                  label='--Pilih Guru--'
                   onChange={(e) => setGrade(e.target.value)}
                 >
                   {grades?.map((grade) => (
@@ -158,11 +158,27 @@ const Edit = ({ open, close }) => {
                 </Select>
               </FormControl>
 
+              <FormControl required fullWidth sx={{ mb: 2 }}>
+                <InputLabel id='demo-simple-select-label'>
+                  --Tampil Nilai--
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  value={display}
+                  label=' --Tampil Nilai--'
+                  onChange={(e) => setDisplay(e.target.value)}
+                >
+                  <MenuItem value='yes'>Ya</MenuItem>
+                  <MenuItem value='no'>Tidak</MenuItem>
+                </Select>
+              </FormControl>
+
               <TextField
                 required
                 fullWidth
-                name="name"
-                label="Nama Ujian"
+                name='name'
+                label='Nama Ujian'
                 value={name || ""}
                 onChange={(e) => setName(e.target.value)}
                 sx={{ mb: 2 }}
@@ -171,8 +187,8 @@ const Edit = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="subject"
-                label="Mata Pelajaran"
+                name='subject'
+                label='Mata Pelajaran'
                 value={subject || ""}
                 onChange={(e) => setSubject(e.target.value)}
                 sx={{ mb: 2 }}
@@ -181,8 +197,8 @@ const Edit = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="choice"
-                label="Bobot PG"
+                name='choice'
+                label='Bobot PG'
                 value={choice || ""}
                 onChange={(e) => setChoice(e.target.value)}
                 sx={{ mb: 2 }}
@@ -191,8 +207,8 @@ const Edit = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="essay"
-                label="Bobot Essay"
+                name='essay'
+                label='Bobot Essay'
                 value={essay || ""}
                 onChange={(e) => setEssay(e.target.value)}
                 sx={{ mb: 2 }}
@@ -201,8 +217,8 @@ const Edit = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="passing"
-                label="KKM"
+                name='passing'
+                label='KKM'
                 value={passing || ""}
                 onChange={(e) => setPassing(e.target.value)}
                 sx={{ mb: 2 }}
@@ -225,7 +241,7 @@ const Edit = ({ open, close }) => {
                   onChange={(date) => setStart(date)}
                   showTimeSelect
                   filterTime={filterPassedTime}
-                  dateFormat="MMMM d, yyyy h:mm aa"
+                  dateFormat='MMMM d, yyyy h:mm aa'
                 />
               </Box>
 
@@ -246,7 +262,7 @@ const Edit = ({ open, close }) => {
                   onChange={(date) => setEnd(date)}
                   showTimeSelect
                   filterTime={filterPassedTime}
-                  dateFormat="MMMM d, yyyy h:mm aa"
+                  dateFormat='MMMM d, yyyy h:mm aa'
                 />
               </Box>
 
@@ -258,10 +274,10 @@ const Edit = ({ open, close }) => {
                   mt: 2,
                 }}
               >
-                <Button variant="contained" color="success" type="submit">
+                <Button variant='contained' color='success' type='submit'>
                   Update
                 </Button>
-                <Button variant="contained" color="error" onClick={close}>
+                <Button variant='contained' color='error' onClick={close}>
                   batalkan
                 </Button>
               </Box>

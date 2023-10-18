@@ -47,6 +47,8 @@ const Table = ({ user, answers, exam }) => {
 
   const resetHandler = (id) => {
     dispatch(resetUser(exam?._id, id));
+
+    console.log(exam?._id, id);
   };
 
   const essayHandler = (userId) => {
@@ -86,7 +88,7 @@ const Table = ({ user, answers, exam }) => {
 
   return (
     <div>
-      <table className="greenTable" width="100%">
+      <table className='greenTable' width='100%'>
         <thead>
           <tr>
             <th>NIS</th>
@@ -131,18 +133,18 @@ const Table = ({ user, answers, exam }) => {
                       examId?.includes(exam?._id) &&
                       userId?.includes(user._id) ? (
                         <Typography
-                          fontWeight="bold"
+                          fontWeight='bold'
                           sx={{ color: green[500] }}
                         >
                           SAVED
                         </Typography>
                       ) : (
-                        <Typography fontWeight="bold" sx={{ color: blue[800] }}>
+                        <Typography fontWeight='bold' sx={{ color: blue[800] }}>
                           ONLINE
                         </Typography>
                       )
                     ) : (
-                      <Typography fontWeight="bold" sx={{ color: red[500] }}>
+                      <Typography fontWeight='bold' sx={{ color: red[500] }}>
                         OFFLINE
                       </Typography>
                     )}
@@ -157,7 +159,7 @@ const Table = ({ user, answers, exam }) => {
                       width: "100%",
                     }}
                   >
-                    <Tooltip title="Unlock">
+                    <Tooltip title='Unlock'>
                       <span>
                         <IconButton
                           sx={{ color: green[800] }}
@@ -176,7 +178,7 @@ const Table = ({ user, answers, exam }) => {
                       </span>
                     </Tooltip>
 
-                    <Tooltip title="Reset">
+                    <Tooltip title='Reset'>
                       <span>
                         <IconButton
                           sx={{ color: blue[400] }}
@@ -195,7 +197,7 @@ const Table = ({ user, answers, exam }) => {
                       </span>
                     </Tooltip>
 
-                    <Tooltip title="Essay">
+                    <Tooltip title='Essay'>
                       <span>
                         <IconButton
                           sx={{ color: yellow[900] }}

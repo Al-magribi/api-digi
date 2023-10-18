@@ -75,6 +75,7 @@ const Add = ({ open, close }) => {
   const [choice, setChoice] = useState("");
   const [essay, setEssay] = useState("");
   const [passing, setPassing] = useState("");
+  const [display, setDisplay] = useState("");
 
   useEffect(() => {
     const initialDate = setHours(setMinutes(new Date(), 0), 9);
@@ -99,6 +100,7 @@ const Add = ({ open, close }) => {
       choice: choice,
       essay: essay,
       passing: passing,
+      display: display,
     };
 
     dispatch(createExam(data));
@@ -115,6 +117,7 @@ const Add = ({ open, close }) => {
       setChoice("0");
       setEssay("0");
       setPassing("");
+      setDisplay("");
 
       dispatch({ type: CREATE_EXAM_RESET });
 
@@ -155,14 +158,14 @@ const Add = ({ open, close }) => {
             >
               {/* TINGKAT */}
               <FormControl required fullWidth sx={{ mb: 2 }}>
-                <InputLabel id="demo-simple-select-label">
+                <InputLabel id='demo-simple-select-label'>
                   --Pilih Tingkat--
                 </InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
                   value={grade}
-                  label="--Pilih Guru--"
+                  label='--Pilih Guru--'
                   onChange={(e) => setGrade(e.target.value)}
                 >
                   {grades?.map((grade) => (
@@ -173,11 +176,27 @@ const Add = ({ open, close }) => {
                 </Select>
               </FormControl>
 
+              <FormControl required fullWidth sx={{ mb: 2 }}>
+                <InputLabel id='demo-simple-select-label'>
+                  --Tampil Nilai--
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  value={display}
+                  label=' --Tampil Nilai--'
+                  onChange={(e) => setDisplay(e.target.value)}
+                >
+                  <MenuItem value='yes'>Ya</MenuItem>
+                  <MenuItem value='no'>Tidak</MenuItem>
+                </Select>
+              </FormControl>
+
               <TextField
                 required
                 fullWidth
-                name="name"
-                label="Nama Ujian"
+                name='name'
+                label='Nama Ujian'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 sx={{ mb: 2 }}
@@ -186,8 +205,8 @@ const Add = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="subject"
-                label="Mata Pelajaran"
+                name='subject'
+                label='Mata Pelajaran'
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 sx={{ mb: 2 }}
@@ -196,8 +215,8 @@ const Add = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="choice"
-                label="Bobot PG"
+                name='choice'
+                label='Bobot PG'
                 value={choice}
                 onChange={(e) => setChoice(e.target.value)}
                 sx={{ mb: 2 }}
@@ -206,8 +225,8 @@ const Add = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="essay"
-                label="Bobot Essay"
+                name='essay'
+                label='Bobot Essay'
                 value={essay}
                 onChange={(e) => setEssay(e.target.value)}
                 sx={{ mb: 2 }}
@@ -216,8 +235,8 @@ const Add = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                name="passing"
-                label="KKM"
+                name='passing'
+                label='KKM'
                 value={passing}
                 onChange={(e) => setPassing(e.target.value)}
                 sx={{ mb: 2 }}
@@ -240,7 +259,7 @@ const Add = ({ open, close }) => {
                   onChange={(date) => setStart(date)}
                   showTimeSelect
                   filterTime={filterPassedTime}
-                  dateFormat="MMMM d, yyyy h:mm aa"
+                  dateFormat='MMMM d, yyyy h:mm aa'
                 />
               </Box>
 
@@ -261,7 +280,7 @@ const Add = ({ open, close }) => {
                   onChange={(date) => setEnd(date)}
                   showTimeSelect
                   filterTime={filterPassedTime}
-                  dateFormat="MMMM d, yyyy h:mm aa"
+                  dateFormat='MMMM d, yyyy h:mm aa'
                 />
               </Box>
 
@@ -273,10 +292,10 @@ const Add = ({ open, close }) => {
                   mt: 2,
                 }}
               >
-                <Button variant="contained" color="success" type="submit">
+                <Button variant='contained' color='success' type='submit'>
                   Tambahkan
                 </Button>
-                <Button variant="contained" color="error" onClick={close}>
+                <Button variant='contained' color='error' onClick={close}>
                   batalkan
                 </Button>
               </Box>

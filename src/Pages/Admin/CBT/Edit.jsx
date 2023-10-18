@@ -49,6 +49,7 @@ const Edit = ({ open, close }) => {
   const [choice, setChoice] = useState("0");
   const [essay, setEssay] = useState("0");
   const [passing, setPassing] = useState("");
+  const [display, setDisplay] = useState("");
 
   useEffect(() => {
     const initialDate = setHours(setMinutes(new Date(), 0), 9);
@@ -66,6 +67,7 @@ const Edit = ({ open, close }) => {
       setChoice(exam?.choice);
       setEssay(exam?.essay);
       setPassing(exam?.passing);
+      setDisplay(exam?.display);
     }
 
     if (isUpdated) {
@@ -89,6 +91,7 @@ const Edit = ({ open, close }) => {
       choice: choice,
       essay: essay,
       passsing: passing,
+      display: display,
     };
 
     dispatch(updateExam(exam?._id, data));
@@ -171,6 +174,22 @@ const Edit = ({ open, close }) => {
                       {grade.grade}
                     </MenuItem>
                   ))}
+                </Select>
+              </FormControl>
+
+              <FormControl required fullWidth sx={{ mb: 2 }}>
+                <InputLabel id='demo-simple-select-label'>
+                  --Tampil Nilai--
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  value={display}
+                  label=' --Tampil Nilai--'
+                  onChange={(e) => setDisplay(e.target.value)}
+                >
+                  <MenuItem value='yes'>Ya</MenuItem>
+                  <MenuItem value='no'>Tidak</MenuItem>
                 </Select>
               </FormControl>
 
