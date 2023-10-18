@@ -68,6 +68,8 @@ router.post("/uploads", async (req, res) => {
       return res.status(400).json({ error: "No image URL provided" });
     }
 
+    console.log(req.body);
+
     // Unggah gambar ke Cloudinary dari URL yang diberikan
     const result = await cloudinary.uploader.upload(req.body.image_url, {
       folder: "exam", // Simpan di folder "exam" di Cloudinary

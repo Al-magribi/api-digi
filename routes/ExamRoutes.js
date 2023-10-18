@@ -496,7 +496,7 @@ router.post(
 router.delete(
   "/:id/remove-logged-user/:user",
   authenticateToken,
-  authorizeAdmin,
+  authorizeAdminTeacher,
   AsyncError(async (req, res) => {
     try {
       const exam = await Exam.findByIdAndUpdate(req.params.id, {
@@ -531,7 +531,13 @@ router.delete(
         return res.status(404).json({ message: "Data tidak ditemukan" });
       }
 
-      await Answer.deleteOne({ user: req.params.user });
+      const userAnswer = await Answer.findOne({ user: req.params.user });
+
+      if (!userAnswer) {
+        return res.status(404).json({ message: "Data tidak ditemukan" });
+      }
+
+      await userAnswer.deleteOne();
 
       return res.status(200).json({ message: "Data berhasil dihapus" });
     } catch (error) {

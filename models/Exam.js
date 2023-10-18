@@ -14,6 +14,7 @@ const ExamSchema = new Schema(
     essay: { type: String, required: false },
     score: { type: String, required: false },
     passing: { type: String, required: true },
+    display: { type: String, required: false },
     questions: {
       type: [Schema.Types.ObjectId],
       ref: "Question",

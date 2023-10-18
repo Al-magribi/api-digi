@@ -24,7 +24,7 @@ import AnswerRoutes from "./routes/AnswerRoutes.js";
 app.use(cors());
 
 app.use(compression());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
