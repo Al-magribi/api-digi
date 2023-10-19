@@ -28,7 +28,11 @@ const __dirname = path.dirname(__filename); //  Get the current directory name
 const app = express();
 
 // Add CORS middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [process.env.DOMAIN_LOCAL, process.env.DOMAIN],
+  })
+);
 
 app.use(compression());
 app.use(bodyParser.json({ limit: "100mb" }));
