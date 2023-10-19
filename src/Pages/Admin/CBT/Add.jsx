@@ -198,6 +198,22 @@ const Add = ({ open, close }) => {
                 </Select>
               </FormControl>
 
+              <FormControl required fullWidth sx={{ mb: 2 }}>
+                <InputLabel id='demo-simple-select-label'>
+                  --Tampil Nilai--
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  value={display}
+                  label=' --Tampil Nilai--'
+                  onChange={(e) => setDisplay(e.target.value)}
+                >
+                  <MenuItem value='yes'>Ya</MenuItem>
+                  <MenuItem value='no'>Tidak</MenuItem>
+                </Select>
+              </FormControl>
+
               <TextField
                 required
                 fullWidth

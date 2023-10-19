@@ -128,7 +128,7 @@ const Exams = () => {
                           ? Number(answer.scorePg).toFixed()
                           : null
                       )
-                    : "Disembunyikan"}
+                    : "-"}
                 </td>
                 <td>
                   {item.display === "yes"
@@ -137,7 +137,7 @@ const Exams = () => {
                           ? Number(answer.scoreEssay).toFixed()
                           : null
                       )
-                    : "Disembunyikan"}
+                    : "-"}
                 </td>
                 <td>
                   {item.display === "yes"
@@ -146,7 +146,7 @@ const Exams = () => {
                           ? Number(answer.finalScore).toFixed()
                           : null
                       )
-                    : "Disembunyikan"}
+                    : "-"}
                 </td>
 
                 <td>

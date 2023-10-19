@@ -89,6 +89,7 @@ export const updateQuestion = (id, updateData) => async (dispatch) => {
 
     dispatch({ type: UPDATE_QUESTION_SUCCESS, payload: data.message });
   } catch (error) {
+    console.log(error);
     dispatch({ type: UPDATE_QUESTION_FAIL, payload: error.message });
   }
 };

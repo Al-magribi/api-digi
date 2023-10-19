@@ -129,13 +129,13 @@ const Exams = ({ subject }) => {
         <thead>
           <tr>
             <th>Nama Guru</th>
-            <th style={{ width: "200px" }}>Nama Ujian</th>
-            <th style={{ width: "200px" }}>Mapel</th>
+            <th style={{ width: "150px" }}>Nama Ujian</th>
+            <th style={{ width: "150px" }}>Mapel</th>
             <th>Tingkat</th>
-            <th>Jadwal</th>
+            <th style={{ width: "200px" }}>Jadwal</th>
             <th>Token</th>
             <th>Soal</th>
-            <th>Status</th>
+            <th style={{ width: "130px" }}>Status</th>
             <th>Opsi</th>
           </tr>
         </thead>
@@ -225,7 +225,7 @@ const Exams = ({ subject }) => {
                         "&:hover": { bgcolor: yellow[800] },
                       }}
                     >
-                      belum dimulai
+                      dimulai
                     </Button>
                   ) : (
                     <Button
@@ -235,7 +235,7 @@ const Exams = ({ subject }) => {
                         "&:hover": { bgcolor: red[800] },
                       }}
                     >
-                      ujian selesai
+                      selesai
                     </Button>
                   )}
                 </Box>

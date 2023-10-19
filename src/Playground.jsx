@@ -23,6 +23,7 @@ const Playground = () => {
             "autolink",
             "lists",
             "link",
+            "image",
             "charmap",
             "preview",
             "anchor",
@@ -44,6 +45,7 @@ const Playground = () => {
             "removeformat | help",
           content_style:
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+          images_upload_url: `${import.meta.env.VITE_URL}/api/upload/image`,
         }}
         onEditorChange={handleQuestion}
       />

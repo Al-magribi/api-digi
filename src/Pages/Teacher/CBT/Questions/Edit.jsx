@@ -11,17 +11,8 @@ import {
 import { Editor } from "@tinymce/tinymce-react";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import app from "../../../Firebase";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { v4 } from "uuid";
 import { updateQuestion } from "../../../../Redux/Question/question_action";
 import Loader from "../../Components/Loader";
-import { toast, ToastContainer } from "react-toastify";
 
 const Edit = ({ open, close }) => {
   const dispatch = useDispatch();
@@ -72,35 +63,14 @@ const Edit = ({ open, close }) => {
 
   const updateHandler = async () => {
     if (updateAudio) {
-      const storage = getStorage(app);
-      const audioFile = updateAudio;
-      const audioFileName = v4() + "." + audioFile.name.split(".").pop();
-      const audioStorageRef = ref(storage, `exam/audio/${audioFileName}`);
-      const audioUploadTask = uploadBytesResumable(audioStorageRef, audioFile);
+      const data = {
+        question: question,
+        options: options,
+        answer: answer,
+        audio: updateAudio,
+      };
 
-      audioUploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = snapshot.bytesTransferred / snapshot.totalBytes;
-
-          toast.success(`Uploading ${progress}%`);
-        },
-        (error) => {
-          toast.error(`Error ${error.message}`);
-        },
-        async () => {
-          const audioUrl = await getDownloadURL(audioUploadTask.snapshot.ref);
-
-          const data = {
-            question: question,
-            audio: audioUrl,
-            options: options,
-            answer: answer,
-          };
-
-          dispatch(updateQuestion(detail._id, data));
-        }
-      );
+      dispatch(updateQuestion(detail._id, data));
     } else {
       const data = {
         question: question,
@@ -212,6 +182,7 @@ const Edit = ({ open, close }) => {
                         "autolink",
                         "lists",
                         "link",
+                        "image",
                         "charmap",
                         "preview",
                         "anchor",
@@ -233,6 +204,9 @@ const Edit = ({ open, close }) => {
                         "removeformat | help",
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                      images_upload_url: `${
+                        import.meta.env.VITE_URL
+                      }/api/upload/image`,
                     }}
                     onEditorChange={handleQuestion}
                   />
@@ -340,7 +314,7 @@ const Edit = ({ open, close }) => {
                               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                             images_upload_url: `${
                               import.meta.env.VITE_URL
-                            }/api/images/web-asset/upload`,
+                            }/api/upload/image`,
                           }}
                           onEditorChange={(content) =>
                             handleAnswer(key, content)

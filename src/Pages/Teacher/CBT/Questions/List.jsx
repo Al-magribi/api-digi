@@ -21,7 +21,7 @@ const List = ({ exam }) => {
 
   return (
     <Fragment>
-      {exam?.questions.map((item) => (
+      {exam?.questions.map((item, index) => (
         <Box
           key={item._id}
           sx={{
@@ -41,6 +41,7 @@ const List = ({ exam }) => {
               p: 2,
             }}
           >
+            <Typography sx={{ mb: 1 }}>{`No ${index + 1}`}</Typography>
             <Typography dangerouslySetInnerHTML={createMarkup(item.question)} />
 
             <Box
@@ -51,7 +52,7 @@ const List = ({ exam }) => {
               }}
             >
               <audio controls style={{ display: item.audio ? "row" : "none" }}>
-                <source src={item.audio} type="audio/mp3" />
+                <source src={item.audio} type='audio/mp3' />
               </audio>
             </Box>
 
@@ -85,7 +86,7 @@ const List = ({ exam }) => {
                   <Typography
                     key={key}
                     value={key}
-                    fontFamily="Nunito Sans"
+                    fontFamily='Nunito Sans'
                     sx={{
                       m: 2,
                       width: "100%",
@@ -99,8 +100,8 @@ const List = ({ exam }) => {
             sx={{ m: 1, width: "95%", display: "flex", justifyContent: "end" }}
           >
             <Button
-              variant="contained"
-              color="secondary"
+              variant='contained'
+              color='secondary'
               onClick={() => editHandler(item._id)}
             >
               Edit
