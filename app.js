@@ -1,9 +1,11 @@
 import express from "express";
 import compression from "compression";
-const app = express();
 
 import bodyParser from "body-parser";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
 import cookieParser from "cookie-parser";
 import ErrorMiddleware from "./middleware/ErrorMiddleware.js";
 import MajorRoutes from "./routes/MajorClass.js";
@@ -20,12 +22,18 @@ import ExamRoutes from "./routes/ExamRoutes.js";
 import UploadRoute from "./routes/uploadRoutes.js";
 import AnswerRoutes from "./routes/AnswerRoutes.js";
 
+const __filename = fileURLToPath(import.meta.url); // Get the current filename
+const __dirname = path.dirname(__filename); //  Get the current directory name
+
+const app = express();
+
 // Add CORS middleware
 app.use(cors());
 
 app.use(compression());
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 
 app.use("/api/major", MajorRoutes);
@@ -40,7 +48,7 @@ app.use("/api/fee", FeeRoutes);
 app.use("/api/payment", PaymentRoutes);
 app.use("/api/exam", ExamRoutes);
 app.use("/api/exam/answer", AnswerRoutes);
-app.use("/api/images", UploadRoute);
+app.use("/api/upload", UploadRoute);
 
 app.use(ErrorMiddleware);
 

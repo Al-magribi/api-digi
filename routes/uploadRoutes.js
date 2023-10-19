@@ -1,84 +1,63 @@
-// import express from "express";
-// import multer from "multer";
-// import { ref, uploadBytes, getStorage, getDownloadURL } from "firebase/storage";
-// import app from "../firebase.js";
-// import { v4 as uuidv4 } from "uuid";
-
-// const router = express.Router();
-// const storage = getStorage(app);
-
-// const memoStorage = multer.memoryStorage();
-// const upload = multer({ storage: memoStorage });
-
-// router.post("/upload", upload.single("file"), async (req, res) => {
-//   try {
-//     const file = req.file;
-//     const filePath = `exam/${uuidv4()}-${file.originalname}`;
-//     const imageRef = ref(storage, filePath);
-//     const metatype = { contentType: file.mimetype };
-//     await uploadBytes(imageRef, file.buffer, metatype);
-//     const downloadURL = await getDownloadURL(imageRef);
-//     res.status(200).json({ location: downloadURL });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to upload image" });
-//   }
-// });
-
-// router.post("/web-asset/upload", upload.single("file"), async (req, res) => {
-//   try {
-//     const file = req.file;
-//     const filePath = `web/${uuidv4()}-${file.originalname}`;
-//     const imageRef = ref(storage, filePath);
-//     const metatype = { contentType: file.mimetype };
-//     await uploadBytes(imageRef, file.buffer, metatype);
-//     const downloadURL = await getDownloadURL(imageRef);
-//     res.status(200).json({ location: downloadURL });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to upload image" });
-//   }
-// });
-
-// export default router;
-
-// import { v2 as cloudinary } from "cloudinary";
-
-// cloudinary.config({
-//   cloud_name: "pt-edutech",
-//   api_key: "688369217314385",
-//   api_secret: "uharE576My4aZN-aDWwdsNS8Jt8",
-// });
-
 import express from "express";
-import cloudinary from "cloudinary";
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
 
-// Konfigurasi Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_KEY,
-  api_secret: process.env.CLOUD_SECRET,
+const imageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/images");
+  },
+
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      path.parse(file.originalname).name +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
 });
 
-router.post("/uploads", async (req, res) => {
+const audioStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/audio");
+  },
+
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      path.parse(file.originalname).name +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadImage = multer({ storage: imageStorage });
+const uploadAudio = multer({ storage: audioStorage });
+
+router.post("/image", uploadImage.single("file"), (req, res) => {
   try {
-    if (!req.body.image_url) {
-      return res.status(400).json({ error: "No image URL provided" });
-    }
+    const imageLink =
+      req.protocol + "://" + req.get("host") + "/images/" + req.file.filename;
 
-    console.log(req.body);
-
-    // Unggah gambar ke Cloudinary dari URL yang diberikan
-    const result = await cloudinary.uploader.upload(req.body.image_url, {
-      folder: "exam", // Simpan di folder "exam" di Cloudinary
-    });
-
-    res.json({ public_id: result.public_id, location: result.secure_url });
+    res.status(200).json({ location: imageLink });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Failed to upload image" });
+    res.status(500).json({ error: error });
+  }
+});
+
+router.post("/audio", uploadAudio.single("audio"), (req, res) => {
+  try {
+    const audioLink =
+      req.protocol + "://" + req.get("host") + "/audios/" + req.file.filename;
+
+    res.status(200).json({ location: audioLink });
+  } catch (error) {
+    res.status(500).json({ error: error });
   }
 });
 

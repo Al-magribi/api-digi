@@ -14,6 +14,7 @@ import multer from "multer";
 import xlsx from "xlsx";
 import fs from "fs";
 import Answer from "../models/Answer.js";
+import path from "path";
 
 const router = express.Router();
 
@@ -27,7 +28,24 @@ const multerStorage = multer.diskStorage({
   },
 });
 
+const audioStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/audio");
+  },
+
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      path.parse(file.originalname).name +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
 const upload = multer({ storage: multerStorage });
+const uploadAudio = multer({ storage: audioStorage });
 
 // MENAMBAHKAN DATA UJIAN // CREATING EXAM DATA
 router.post(
@@ -129,7 +147,7 @@ router.get(
   })
 );
 
-// MENGUPDATE DATA UJIAN // UPDATUNG EXAM DATA
+// MENGUPDATE DATA UJIAN // UPDATING EXAM DATA
 router.put(
   "/update/:id",
   authenticateToken,
@@ -319,23 +337,56 @@ router.get(
 // MENGUPDATE PERTANYAAN
 router.put(
   "/question/update/:id",
+  uploadAudio.single("audio"),
   authenticateToken,
   authorizeAdminTeacher,
   AsyncError(async (req, res) => {
     try {
-      let question = await Questions.findById(req.params.id);
+      let single_question = await Questions.findById(req.params.id);
 
-      if (!question) {
+      if (!single_question) {
         return res.status(404).json({ message: "Data tidak ditemukan" });
       }
 
-      question = await Questions.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-      });
+      const { question, options, answer } = req.body;
 
-      return res.status(200).json({ message: "Berhasil diperbarui" });
+      if (req.file) {
+        const audioLink =
+          req.protocol +
+          "://" +
+          req.get("host") +
+          "/audio/" +
+          req.file.filename;
+
+        const update = { question, options, answer, audio: audioLink };
+
+        single_question = await Questions.findByIdAndUpdate(
+          req.params.id,
+          update,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+
+        return res.status(200).json({ message: "Berhasil diperbarui" });
+      } else {
+        const update = { question, options, answer };
+
+        single_question = await Questions.findByIdAndUpdate(
+          req.params.id,
+          update,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+
+        return res.status(200).json({ message: "Berhasil diperbarui" });
+      }
     } catch (error) {
+      console.log(error);
+
       return res.status(500).json({ message: error.message });
     }
   })
