@@ -34,7 +34,7 @@ app.use(cors());
 app.use(compression());
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(serveStatic(path.join(__dirname, "uploads")));
+app.use("/uploads", serveStatic(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 
 app.use("/api/major", MajorRoutes);
