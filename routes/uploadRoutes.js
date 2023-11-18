@@ -41,8 +41,7 @@ const uploadAudio = multer({ storage: audioStorage });
 
 router.post("/image", uploadImage.single("file"), (req, res) => {
   try {
-    const imageLink =
-      req.protocol + "://" + req.get("host") + "/images/" + req.file.filename;
+    const imageLink = process.env.URL + "/images/" + req.file.filename;
 
     res.status(200).json({ location: imageLink });
   } catch (error) {
@@ -52,8 +51,7 @@ router.post("/image", uploadImage.single("file"), (req, res) => {
 
 router.post("/audio", uploadAudio.single("audio"), (req, res) => {
   try {
-    const audioLink =
-      req.protocol + "://" + req.get("host") + "/audios/" + req.file.filename;
+    const audioLink = process.env.URL + "/audios/" + req.file.filename;
 
     res.status(200).json({ location: audioLink });
   } catch (error) {

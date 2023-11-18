@@ -99,11 +99,9 @@ router.put(
       const logoName = logo[0].filename;
       const heroName = hero[0].filename;
 
-      const logoLink =
-        req.protocol + "://" + req.get("host") + "/assets/" + logoName;
+      const logoLink = process.env.URL + "/assets/" + logoName;
 
-      const heroLink =
-        req.protocol + "://" + req.get("host") + "/assets/" + heroName;
+      const heroLink = process.env.URL + "/assets/" + heroName;
 
       const data = {
         name: req.body.name,

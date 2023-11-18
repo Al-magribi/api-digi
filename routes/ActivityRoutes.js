@@ -37,8 +37,7 @@ router.post(
   uploadImage.single("img"),
   AsyncError(async (req, res, next) => {
     try {
-      const imageLink =
-        req.protocol + "://" + req.get("host") + "/images/" + req.file.filename;
+      const imageLink = process.env.URL + "/images/" + req.file.filename;
 
       const activity = await Activity.create({
         title: req.body.title,
