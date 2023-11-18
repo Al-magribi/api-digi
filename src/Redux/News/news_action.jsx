@@ -39,7 +39,7 @@ export const addNews = (news) => async (dispatch) => {
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     };
 
@@ -115,7 +115,7 @@ export const updateNews = (id, dataUpdate) => async (dispatch) => {
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     };
 

@@ -31,7 +31,7 @@ export const addEbook = (ebook) => async (dispatch) => {
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     };
 
@@ -39,7 +39,6 @@ export const addEbook = (ebook) => async (dispatch) => {
 
     dispatch({ type: EBOOK_SUCCESS, paylaod: data.message });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: EBOOK_FAIL,
       payload: error.response.data.error.errors.message,

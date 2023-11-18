@@ -22,7 +22,7 @@ export const addFeeds = (act) => async (dispatch) => {
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     };
 

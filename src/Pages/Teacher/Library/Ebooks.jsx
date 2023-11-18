@@ -25,7 +25,7 @@ const Ebooks = () => {
       }}
     >
       <table
-        className="greenTable"
+        className='greenTable'
         width={window.innerWidth < 950 ? "900px" : "100%"}
       >
         <thead>
@@ -65,11 +65,11 @@ const Ebooks = () => {
                 </Box>
               </td>
               <td>{item.title}</td>
-              <td>{item.user.name}</td>
+              <td>{item.user?.name}</td>
               <td>{item.subject}</td>
               <td>{item.category}</td>
 
-              <td width="130px">
+              <td width='130px'>
                 <Box
                   sx={{
                     display: "flex",

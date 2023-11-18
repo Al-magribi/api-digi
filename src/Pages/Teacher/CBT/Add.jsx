@@ -135,16 +135,27 @@ const Add = ({ open, close }) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: { xs: 350, md: 400 },
+            height: 500,
+            overflow: "auto",
             bgcolor: "#ffff",
             boxShadow: 24,
             p: 2,
             display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
+            alignItems: "start",
           }}
         >
           {loading ? (
-            <Loader />
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Loader />
+            </Box>
           ) : (
             <form
               style={{

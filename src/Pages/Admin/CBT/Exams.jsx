@@ -72,6 +72,17 @@ const Exams = ({ subject }) => {
 
   const deleteQue = (id) => dispatch(deleteQuestion(id));
 
+  const copyToken = (item) => {
+    navigator.clipboard
+      .writeText(item)
+      .then(() => {
+        toast.success("Copied");
+      })
+      .catch(() => {
+        toast.info("Failed to copy");
+      });
+  };
+
   useEffect(() => {
     if (isUpdated) {
       toast.success(updateMessage);
@@ -185,13 +196,22 @@ const Exams = ({ subject }) => {
                   }}
                 >
                   <Tooltip placement='top-end' title='Token Masuk'>
-                    <Button sx={{ mb: 1 }} variant='contained' color='success'>
+                    <Button
+                      sx={{ mb: 1 }}
+                      variant='contained'
+                      color='success'
+                      onClick={() => copyToken(item.tokenIn)}
+                    >
                       {item.tokenIn}
                     </Button>
                   </Tooltip>
 
                   <Tooltip placement='bottom-end' title='Token Keluar'>
-                    <Button variant='contained' color='error'>
+                    <Button
+                      variant='contained'
+                      color='error'
+                      onClick={() => copyToken(item.tokenOut)}
+                    >
                       {item.tokenOut}
                     </Button>
                   </Tooltip>

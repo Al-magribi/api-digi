@@ -41,11 +41,21 @@ const Start_Exam = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (isTabActive === false) {
-  //     navigate("/student-dashboard");
-  //   }
-  // }, [isTabActive, navigate]);
+  useEffect(() => {
+    let timeoutId;
+
+    if (isTabActive === false) {
+      timeoutId = setTimeout(() => {
+        navigate("/student-dashboard");
+      }, 10000); // 10000 milliseconds (10 seconds)
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isTabActive, navigate]);
 
   return (
     <Box

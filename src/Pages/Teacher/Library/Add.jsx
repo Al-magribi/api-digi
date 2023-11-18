@@ -13,14 +13,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader";
 import { ToastContainer, toast } from "react-toastify";
-import app from "../../Firebase";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { v4 } from "uuid";
 import "react-toastify/dist/ReactToastify.css";
 import { addEbook } from "../../../Redux/Ebook/ebook_action";
 import { EBOOK_RESET } from "../../../Redux/Ebook/ebook_const";
@@ -62,41 +54,11 @@ const Add = ({ open, close }) => {
   const addHandler = async (e) => {
     e.preventDefault();
 
-    const storage = getStorage(app);
-    const imgFile = image;
-    const imgFileName = v4() + "." + imgFile.name.split(".").pop();
-    const imgStorageRef = ref(storage, `ebooks/${imgFileName}`);
-    const imgUploadTask = uploadBytesResumable(imgStorageRef, imgFile);
-
-    const pdfFile = pdf;
-    const pdfFileName = v4() + "." + pdfFile.name.split(".").pop(); // Generate UUID as file name
-    const pdfStorageRef = ref(storage, `ebooks/${pdfFileName}`); // Save in "ebooks" folder
-    const pdfUploadTask = uploadBytesResumable(pdfStorageRef, pdfFile);
-
-    // Display toast notifications for upload progress
-    toast.info("Uploading image...");
-    imgUploadTask.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      toast.info(`Image Upload Progress: ${progress}%`);
-    });
-
-    toast.info("Uploading PDF...");
-    pdfUploadTask.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      toast.info(`PDF Upload Progress: ${progress}%`);
-    });
-
-    // Upload the image and the pdf simultaneously
-    await Promise.all([imgUploadTask, pdfUploadTask]);
-
-    const imageData = await getDownloadURL(imgUploadTask.snapshot.ref);
-    const pdfData = await getDownloadURL(pdfUploadTask.snapshot.ref);
-
     const data = {
-      user: user?._id,
+      user: user._id,
       title: title,
-      img: imageData,
-      ebook: pdfData,
+      img: image,
+      ebook: pdf,
       subject: subject,
       category: category,
     };
@@ -116,6 +78,8 @@ const Add = ({ open, close }) => {
       toast.success("Berhasil ditambahkan");
 
       dispatch({ type: EBOOK_RESET });
+
+      close();
     }
   }, [success, dispatch]);
 
@@ -153,7 +117,7 @@ const Add = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                label="Judul"
+                label='Judul'
                 sx={{ mb: 2 }}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -162,7 +126,7 @@ const Add = ({ open, close }) => {
               <TextField
                 required
                 fullWidth
-                label="Mapel"
+                label='Mapel'
                 sx={{ mb: 2 }}
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
@@ -172,13 +136,13 @@ const Add = ({ open, close }) => {
                 <InputLabel>Kategori</InputLabel>
                 <Select
                   value={category}
-                  label="Kategori"
+                  label='Kategori'
                   onChange={(e) => setCategory(e.target.value)}
                 >
-                  <MenuItem value="Tugas">Tugas</MenuItem>
-                  <MenuItem value="Bahan Bacaan">Bahan Bacaan</MenuItem>
-                  <MenuItem value="Artikel">Artikel</MenuItem>
-                  <MenuItem value="Novel">Novel</MenuItem>
+                  <MenuItem value='Tugas'>Tugas</MenuItem>
+                  <MenuItem value='Bahan Bacaan'>Bahan Bacaan</MenuItem>
+                  <MenuItem value='Artikel'>Artikel</MenuItem>
+                  <MenuItem value='Novel'>Novel</MenuItem>
                 </Select>
               </FormControl>
 
@@ -204,14 +168,14 @@ const Add = ({ open, close }) => {
                   }}
                 >
                   <input
-                    accept="images/*"
-                    id="upload_featured_image"
-                    type="file"
+                    accept='images/*'
+                    id='upload_featured_image'
+                    type='file'
                     style={{ display: "none" }}
                     onChange={imageHandler}
                     required
                   />
-                  <label htmlFor="upload_featured_image">
+                  <label htmlFor='upload_featured_image'>
                     <img
                       src={preview}
                       style={{
@@ -241,15 +205,15 @@ const Add = ({ open, close }) => {
                   }}
                 >
                   <input
-                    accept=".pdf"
-                    id="pdf"
-                    type="file"
+                    accept='.pdf'
+                    id='pdf'
+                    type='file'
                     onChange={pdfHandler}
                     style={{ display: "none" }}
                     required
                   />
-                  <label htmlFor="pdf">
-                    <Button component="span" variant="outlined" color="success">
+                  <label htmlFor='pdf'>
+                    <Button component='span' variant='outlined' color='success'>
                       PDF FILe
                     </Button>
                   </label>
@@ -268,10 +232,10 @@ const Add = ({ open, close }) => {
                   mt: 2,
                 }}
               >
-                <Button variant="contained" color="success" type="submit">
+                <Button variant='contained' color='success' type='submit'>
                   tambah
                 </Button>
-                <Button variant="contained" color="error" onClick={close}>
+                <Button variant='contained' color='error' onClick={close}>
                   batalkan
                 </Button>
               </Box>

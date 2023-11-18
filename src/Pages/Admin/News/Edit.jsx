@@ -13,14 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader";
 import { Editor } from "@tinymce/tinymce-react";
 import { ToastContainer, toast } from "react-toastify";
-import app from "../../Firebase";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { v4 } from "uuid";
 import { updateNews } from "../../../Redux/News/news_action";
 import { NEWS_UPDATE_RESET } from "../../../Redux/News/news_const";
 
@@ -33,8 +25,6 @@ const Edit = ({ open, close }) => {
     isUpdated,
     message,
   } = useSelector((state) => state.upDelNews);
-
-  // const update_loading = true;
 
   const imageLink =
     "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png";
@@ -82,37 +72,14 @@ const Edit = ({ open, close }) => {
     e.preventDefault();
 
     if (image) {
-      const storage = getStorage(app);
-      const imgFile = image;
-      const imgFileName = v4() + "." + imgFile.name.split(".").pop();
-      const imgStorageRef = ref(storage, `information/${imgFileName}`);
-      const imgUploadTask = uploadBytesResumable(imgStorageRef, imgFile);
+      const data = {
+        title: title,
+        category: category,
+        text: text,
+        img: image,
+      };
 
-      imgUploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-          toast.success(`Upload prosess ${progress}%`);
-        },
-        (error) => {
-          toast.error(`Error ${error.message}`);
-        },
-
-        async () => {
-          const imageData = await getDownloadURL(imgUploadTask.snapshot.ref);
-
-          const data = {
-            title: title,
-            category: category,
-            img: imageData,
-            text: text,
-          };
-
-          dispatch(updateNews(news?._id, data));
-        }
-      );
+      dispatch(updateNews(news?._id, data));
     } else {
       const data = {
         title: title,
@@ -179,7 +146,7 @@ const Edit = ({ open, close }) => {
                 <Box sx={{ flex: 1, p: 1, height: "90%", width: "90%" }}>
                   <TextField
                     fullWidth
-                    label="Judul"
+                    label='Judul'
                     sx={{ mb: 2 }}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -189,23 +156,23 @@ const Edit = ({ open, close }) => {
                     <InputLabel>Kategory</InputLabel>
                     <Select
                       value={category}
-                      label="Kategory"
+                      label='Kategory'
                       onChange={(e) => setCategory(e.target.value)}
                     >
-                      <MenuItem value="umum">Umum</MenuItem>
-                      <MenuItem value="ppdb">PPDB</MenuItem>
+                      <MenuItem value='umum'>Umum</MenuItem>
+                      <MenuItem value='ppdb'>PPDB</MenuItem>
                     </Select>
                   </FormControl>
 
                   <Box sx={{ width: "100%", height: 150, mb: 2 }}>
                     <input
-                      accept=".jpg"
-                      id="upload_featured_image"
-                      type="file"
+                      accept='.jpg'
+                      id='upload_featured_image'
+                      type='file'
                       style={{ display: "none" }}
                       onChange={imageHandler}
                     />
-                    <label htmlFor="upload_featured_image">
+                    <label htmlFor='upload_featured_image'>
                       <img
                         src={preview !== imageLink ? preview : oldImage}
                         style={{
@@ -280,14 +247,14 @@ const Edit = ({ open, close }) => {
               >
                 <Button
                   sx={{ mr: 2 }}
-                  variant="contained"
-                  color="error"
+                  variant='contained'
+                  color='error'
                   onClick={close}
                 >
                   batalkan
                 </Button>
 
-                <Button variant="contained" color="success" type="submit">
+                <Button variant='contained' color='success' type='submit'>
                   update
                 </Button>
               </Box>

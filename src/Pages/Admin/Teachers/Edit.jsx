@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader";
 import { updateTeacher } from "../../../Redux/User/user_action";
+import { UPDATE_TEACHER_RESET } from "../../../Redux/User/user_const";
 
 const Edit = ({ open, close }) => {
   const dispatch = useDispatch();
@@ -11,7 +12,9 @@ const Edit = ({ open, close }) => {
     (state) => state.detailTeacher
   );
 
-  const { isUpdated } = useSelector((state) => state.upDelTeacher);
+  const { isUpdated, loading: upLoading } = useSelector(
+    (state) => state.upDelTeacher
+  );
 
   const [name, setName] = useState("");
   const [mapel, setMapel] = useState("");
@@ -33,6 +36,10 @@ const Edit = ({ open, close }) => {
       setMapel("");
       setUsername("");
       setPassword("");
+
+      close();
+
+      dispatch({ type: UPDATE_TEACHER_RESET });
     }
   }, [isUpdated]);
 
@@ -68,7 +75,7 @@ const Edit = ({ open, close }) => {
             justifyContent: "center",
           }}
         >
-          {loading ? (
+          {loading || upLoading ? (
             <Loader />
           ) : (
             <form
@@ -84,7 +91,7 @@ const Edit = ({ open, close }) => {
               <TextField
                 fullWidth
                 sx={{ mb: 2 }}
-                label="Nama"
+                label='Nama'
                 value={name || ""}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -92,7 +99,7 @@ const Edit = ({ open, close }) => {
               <TextField
                 fullWidth
                 sx={{ mb: 2 }}
-                label="Mapel"
+                label='Mapel'
                 value={mapel || ""}
                 onChange={(e) => setMapel(e.target.value)}
               />
@@ -100,16 +107,16 @@ const Edit = ({ open, close }) => {
               <TextField
                 fullWidth
                 sx={{ mb: 2 }}
-                label="Username"
+                label='Username'
                 value={username || ""}
                 onChange={(e) => setUsername(e.target.value)}
               />
 
               <TextField
-                type="password"
+                type='password'
                 fullWidth
                 sx={{ mb: 2 }}
-                label="Password"
+                label='Password'
                 value={password || ""}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -121,11 +128,12 @@ const Edit = ({ open, close }) => {
                   width: "100%",
                 }}
               >
-                <Button variant="contained" color="success" type="submit">
-                  Update
-                </Button>
-                <Button variant="contained" color="error" onClick={close}>
+                <Button variant='contained' color='error' onClick={close}>
                   batalkan
+                </Button>
+
+                <Button variant='contained' color='success' type='submit'>
+                  Update
                 </Button>
               </Box>
             </form>

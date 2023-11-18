@@ -3,14 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader";
 import { toast } from "react-toastify";
-import app from "../../Firebase";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { v4 } from "uuid";
+
 import { ACT_RESET } from "../../../Redux/Act/act_const";
 import { addFeeds } from "../../../Redux/Act/act_action";
 
@@ -44,35 +37,12 @@ const Add = ({ open, close }) => {
   const addHandler = (e) => {
     e.preventDefault();
 
-    const storage = getStorage(app);
-    const imgFile = image;
-    const imgFileName = v4() + "." + imgFile.name.split(".").pop();
-    const imgStorageRef = ref(storage, `feeds/${imgFileName}`);
-    const imgUploadTask = uploadBytesResumable(imgStorageRef, imgFile);
+    const data = {
+      title: title,
+      img: image,
+    };
 
-    imgUploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-        toast.success(`Upload prosess ${progress}%`);
-      },
-      (error) => {
-        toast.error(`Error ${error.message}`);
-      },
-
-      async () => {
-        const imageData = await getDownloadURL(imgUploadTask.snapshot.ref);
-
-        const data = {
-          title: title,
-          img: imageData,
-        };
-
-        dispatch(addFeeds(data));
-      }
-    );
+    dispatch(addFeeds(data));
   };
 
   useEffect(() => {
@@ -84,6 +54,8 @@ const Add = ({ open, close }) => {
       setPreview(imageLink);
 
       dispatch({ type: ACT_RESET });
+
+      close();
     } else {
       toast.error(error);
 
@@ -124,7 +96,7 @@ const Add = ({ open, close }) => {
             >
               <TextField
                 fullWidth
-                label="Judul"
+                label='Judul'
                 sx={{ mb: 2 }}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -132,13 +104,13 @@ const Add = ({ open, close }) => {
 
               <Box sx={{ width: "100%", height: 200, mb: 2 }}>
                 <input
-                  accept=".jpg"
-                  id="upload_featured_image"
-                  type="file"
+                  accept='.jpg'
+                  id='upload_featured_image'
+                  type='file'
                   style={{ display: "none" }}
                   onChange={imageHandler}
                 />
-                <label htmlFor="upload_featured_image">
+                <label htmlFor='upload_featured_image'>
                   <img
                     src={preview}
                     style={{
@@ -165,11 +137,12 @@ const Add = ({ open, close }) => {
                   mt: 2,
                 }}
               >
-                <Button variant="contained" color="success" type="submit">
-                  tambah
-                </Button>
-                <Button variant="contained" color="error" onClick={close}>
+                <Button variant='contained' color='error' onClick={close}>
                   batalkan
+                </Button>
+
+                <Button variant='contained' color='success' type='submit'>
+                  tambah
                 </Button>
               </Box>
             </form>

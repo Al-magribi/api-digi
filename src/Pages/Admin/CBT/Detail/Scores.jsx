@@ -22,7 +22,7 @@ const Scores = ({ open, close }) => {
         Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
-      timeout: 100000, // Misalnya, atur batasan waktu menjadi 10 detik (10000 milidetik)
+      timeout: 100000, // atur batasan waktu menjadi 10 detik (10000 milidetik)
     };
 
     try {
@@ -116,7 +116,17 @@ const Scores = ({ open, close }) => {
           }}
         >
           {loading ? (
-            <Loader />
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Loader />
+            </Box>
           ) : (
             <>
               <ToastContainer />
