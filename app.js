@@ -4,6 +4,7 @@ import compression from "compression";
 import bodyParser from "body-parser";
 import cors from "cors";
 import path from "path";
+import serveStatic from "serve-static";
 import { fileURLToPath } from "url";
 
 import cookieParser from "cookie-parser";
@@ -22,8 +23,8 @@ import ExamRoutes from "./routes/ExamRoutes.js";
 import UploadRoute from "./routes/uploadRoutes.js";
 import AnswerRoutes from "./routes/AnswerRoutes.js";
 
-const __filename = fileURLToPath(import.meta.url); // Get the current filename
-const __dirname = path.dirname(__filename); //  Get the current directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -33,7 +34,7 @@ app.use(cors());
 app.use(compression());
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "uploads")));
+app.use(serveStatic(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 
 app.use("/api/major", MajorRoutes);
