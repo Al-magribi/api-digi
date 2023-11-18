@@ -6,17 +6,47 @@ import {
 } from "../middleware/Authenticator.js";
 import ErrorHandler from "../middleware/ErrorHandler.js";
 import News from "../models/News.js";
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
+
+const imageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/images");
+  },
+
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      path.parse(file.originalname).name +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadImage = multer({ storage: imageStorage });
 
 // MEMBUAT INFORMASI
 router.post(
   "/create",
   authenticateToken,
   authorizeAdmin,
+  uploadImage.single("img"),
   AsyncError(async (req, res, next) => {
     try {
-      const news = await News.create(req.body);
+      const imageLink =
+        req.protocol + "://" + req.get("host") + "/images/" + req.file.filename;
+
+      const news = await News.create({
+        title: req.body.title,
+        body: req.body,
+        category: req.body.category,
+        img: imageLink,
+        text: req.body.text,
+      });
 
       res.status(200).json({ message: "Berhasil ditambahkan", news });
     } catch (error) {
@@ -70,6 +100,7 @@ router.put(
   "/update/:id",
   authenticateToken,
   authorizeAdmin,
+  uploadImage.single("img"),
   AsyncError(async (req, res, next) => {
     try {
       let news = News.findById(req.params.id);
@@ -78,7 +109,17 @@ router.put(
         return next(new ErrorHandler("Informasi tidak ditemukan", 404));
       }
 
-      news = await News.findByIdAndUpdate(req.params.id, req.body, {
+      const imageLink =
+        req.protocol + "://" + req.get("host") + "/images/" + req.file.filename;
+
+      const data = {
+        title: req.body.title,
+        category: req.body.category,
+        text: req.body.text,
+        img: imageLink,
+      };
+
+      news = await News.findByIdAndUpdate(req.params.id, data, {
         new: true,
         runValidators: true,
       });

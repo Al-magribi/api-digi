@@ -6,8 +6,28 @@ import {
 } from "../middleware/Authenticator.js";
 import ErrorHandler from "../middleware/ErrorHandler.js";
 import Web from "../models/Web.js";
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
+
+const imageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/assets");
+  },
+
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      path.parse(file.originalname).name +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadImage = multer({ storage: imageStorage });
 
 // MEMBUAT DATA WEB
 router.post(
@@ -62,6 +82,10 @@ router.put(
   "/update/:id",
   authenticateToken,
   authorizeAdmin,
+  uploadImage.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "hero", maxCount: 1 },
+  ]),
   AsyncError(async (req, res, next) => {
     try {
       let web = await Web.findById(req.params.id);
@@ -70,7 +94,29 @@ router.put(
         return next(new ErrorHandler("Data tidak ditemukan", 404));
       }
 
-      web = await Web.findByIdAndUpdate(req.params.id, req.body, {
+      const { logo, hero } = req.files;
+
+      const logoName = logo[0].filename;
+      const heroName = hero[0].filename;
+
+      const logoLink =
+        req.protocol + "://" + req.get("host") + "/assets/" + logoName;
+
+      const heroLink =
+        req.protocol + "://" + req.get("host") + "/assets/" + heroName;
+
+      const data = {
+        name: req.body.name,
+        tagline: req.body.tagline,
+        address: req.body.address,
+        email: req.body.email,
+        phone: req.body.phone,
+        logo: logoLink,
+        hero: heroLink,
+        visi_misi: req.body.text,
+      };
+
+      web = await Web.findByIdAndUpdate(req.params.id, data, {
         new: true,
         runValidators: true,
       });

@@ -8,8 +8,28 @@ import {
   authorizeAdminTeacher,
   authorizeTeacher,
 } from "../middleware/Authenticator.js";
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
+
+const ebookStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/ebooks");
+  },
+
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      path.parse(file.originalname).name +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadEbook = multer({ storage: ebookStorage });
 
 // MENAMPILKAN SEMUA EBOOK
 router.get(
@@ -38,13 +58,11 @@ router.get(
   authorizeAdminTeacher,
   async (req, res) => {
     try {
-      const { title } = req.query || ""; // Ambil judul dari query string jika ada
+      const { title } = req.query || "";
+      let ebookQuery = { user: req.user.id };
 
-      let ebookQuery = { user: req.user.id }; // Query dasar untuk mencari ebook berdasarkan user ID
-
-      // Jika ada judul yang diberikan dalam query string, tambahkan filter berdasarkan judul
       if (title) {
-        ebookQuery.title = { $regex: title, $options: "i" }; // Menggunakan regex untuk pencarian tidak bersifat case-sensitive
+        ebookQuery.title = { $regex: title, $options: "i" };
       }
 
       const ebooks = await Ebook.find(ebookQuery)
@@ -67,13 +85,40 @@ router.post(
   "/create",
   authenticateToken,
   authorizeAdminTeacher,
+  uploadEbook.fields([
+    { name: "img", maxCount: 1 },
+    { name: "ebook", maxCount: 1 },
+  ]),
   AsyncError(async (req, res) => {
     try {
-      const ebook = await Ebook.create(req.body);
+      const { img, ebook } = req.files;
 
-      res.status(200).json({ ebook, message: "Ebook Berhasil ditambahkan" });
+      // Assuming you want the filenames
+      const imgFilename = img[0].filename;
+      const ebookFilename = ebook[0].filename;
+
+      const imageLink =
+        req.protocol + "://" + req.get("host") + "/ebooks/" + imgFilename;
+
+      const ebookLink =
+        req.protocol + "://" + req.get("host") + "/ebooks/" + ebookFilename;
+
+      console.log(`image: ${imageLink}, ebook: ${ebookLink}`);
+
+      const ebooks = await Ebook.create({
+        title: req.body.title,
+        user: req.body.user,
+        subject: req.body.subject,
+        category: req.body.category,
+        img: imageLink,
+        ebook: ebookLink,
+      });
+
+      res.status(200).json({ message: "Ebook Berhasil ditambahkan" });
     } catch (error) {
       res.status(500).json({ error: error });
+
+      console.log(error);
     }
   })
 );

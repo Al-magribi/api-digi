@@ -488,7 +488,7 @@ router.get(
         query.name = { $regex: new RegExp(name, "i") }; // Mencocokkan nama secara case-insensitive
       }
 
-      const teachers = await User.find(query);
+      const teachers = await User.find(query).sort({ name: 1 });
 
       if (!teachers || teachers.length === 0) {
         return res.status(404).json({ message: "Data tidak ditemukan" });

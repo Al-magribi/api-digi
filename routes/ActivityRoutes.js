@@ -6,17 +6,44 @@ import {
 } from "../middleware/Authenticator.js";
 import ErrorHandler from "../middleware/ErrorHandler.js";
 import Activity from "../models/Activity.js";
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
+
+const imageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/images");
+  },
+
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      path.parse(file.originalname).name +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadImage = multer({ storage: imageStorage });
 
 // MEMBUAT INFORMASI
 router.post(
   "/create",
   authenticateToken,
   authorizeAdmin,
+  uploadImage.single("img"),
   AsyncError(async (req, res, next) => {
     try {
-      const activity = await Activity.create(req.body);
+      const imageLink =
+        req.protocol + "://" + req.get("host") + "/images/" + req.file.filename;
+
+      const activity = await Activity.create({
+        title: req.body.title,
+        img: imageLink,
+      });
 
       res.status(200).json({ activity, message: "Berhasil ditambahkan" });
     } catch (error) {
