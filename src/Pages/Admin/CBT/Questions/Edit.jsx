@@ -123,18 +123,14 @@ const Edit = ({ open, close }) => {
             <Button
               sx={{ mr: 2 }}
               variant='contained'
-              color='success'
-              onClick={updateHandler}
-            >
-              Update
-            </Button>
-
-            <Button
-              variant='contained'
               color='error'
               onClick={() => close(true)}
             >
               TUTUP
+            </Button>
+
+            <Button variant='contained' color='success' onClick={updateHandler}>
+              Update
             </Button>
           </Box>
           {loading || upLoad ? (
