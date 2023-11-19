@@ -337,9 +337,9 @@ router.get(
 // MENGUPDATE PERTANYAAN
 router.put(
   "/question/update/:id",
-  uploadAudio.single("audio"),
   authenticateToken,
   authorizeAdminTeacher,
+  uploadAudio.single("audio"),
   AsyncError(async (req, res) => {
     try {
       let single_question = await Questions.findById(req.params.id);
@@ -352,11 +352,7 @@ router.put(
 
       if (req.file) {
         const audioLink =
-          req.protocol +
-          "://" +
-          req.get("host") +
-          "/audio/" +
-          req.file.filename;
+          process.env.URL + "/uploads/audio/" + req.file.filename;
 
         const update = { question, options, answer, audio: audioLink };
 
