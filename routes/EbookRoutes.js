@@ -97,9 +97,9 @@ router.post(
       const imgFilename = img[0].filename;
       const ebookFilename = ebook[0].filename;
 
-      const imageLink = process.env.URL + "/ebooks/" + imgFilename;
+      const imageLink = process.env.URL + "/uploads/ebooks/" + imgFilename;
 
-      const ebookLink = process.env.URL + "/ebooks/" + ebookFilename;
+      const ebookLink = process.env.URL + "/uploads/ebooks/" + ebookFilename;
 
       console.log(`image: ${imageLink}, ebook: ${ebookLink}`);
 

@@ -37,7 +37,8 @@ router.post(
   uploadImage.single("img"),
   AsyncError(async (req, res, next) => {
     try {
-      const imageLink = process.env.URL + "/images/" + req.file.filename;
+      const imageLink =
+        process.env.URL + "/uploads/images/" + req.file.filename;
 
       const news = await News.create({
         title: req.body.title,
@@ -108,7 +109,8 @@ router.put(
         return next(new ErrorHandler("Informasi tidak ditemukan", 404));
       }
 
-      const imageLink = process.env.URL + "/images/" + req.file.filename;
+      const imageLink =
+        process.env.URL + "/uploads/images/" + req.file.filename;
 
       const data = {
         title: req.body.title,
