@@ -29,7 +29,10 @@ const ebookStorage = multer.diskStorage({
   },
 });
 
-const uploadEbook = multer({ storage: ebookStorage });
+const uploadEbook = multer({
+  storage: ebookStorage,
+  limits: { fileSize: 1024 * 1024 * 50 },
+});
 
 // MENAMPILKAN SEMUA EBOOK
 router.get(
@@ -100,8 +103,6 @@ router.post(
       const imageLink = process.env.URL + "/uploads/ebooks/" + imgFilename;
 
       const ebookLink = process.env.URL + "/uploads/ebooks/" + ebookFilename;
-
-      console.log(`image: ${imageLink}, ebook: ${ebookLink}`);
 
       const ebooks = await Ebook.create({
         title: req.body.title,
