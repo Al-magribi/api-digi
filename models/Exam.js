@@ -15,6 +15,7 @@ const ExamSchema = new Schema(
     score: { type: String, required: false },
     passing: { type: String, required: true },
     display: { type: String, required: false },
+    remedial: { type: String, required: false },
     questions: {
       type: [Schema.Types.ObjectId],
       ref: "Question",

@@ -566,7 +566,6 @@ router.delete(
 router.delete(
   "/:id/reset-user/:user",
   authenticateToken,
-  authorizeAdminTeacher,
   AsyncError(async (req, res) => {
     try {
       const exam = await Exam.findByIdAndUpdate(req.params.id, {
