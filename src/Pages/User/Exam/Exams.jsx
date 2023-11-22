@@ -10,7 +10,7 @@ import {
 import React, { useState, useRef, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { getDetailExam } from "../../../Redux/Exam/exam_action";
+import { getDetailExam, resetUser } from "../../../Redux/Exam/exam_action";
 import Token from "./Token";
 
 const Exams = () => {
@@ -18,6 +18,8 @@ const Exams = () => {
 
   const { myExams: exams } = useSelector((state) => state.myExams);
   const { myAnswers: answers } = useSelector((state) => state.myAnswer);
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { resetLoading } = useSelector((state) => state.reset);
 
   const [check, setCheck] = useState(false);
 
@@ -43,6 +45,10 @@ const Exams = () => {
 
   const date = new Date();
   const real_time = format(date, "yyyy-MM-dd HH:mm");
+
+  const reset = (examId) => {
+    dispatch(resetUser(examId, userInfo._id));
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -173,6 +179,20 @@ const Exams = () => {
                         ujian selesai
                       </Button>
                     )}
+
+                    {item.remedial ? (
+                      <Button
+                        variant='contained'
+                        color='error'
+                        sx={{
+                          ml: 2,
+                          display: real_time < item.start ? "none" : "block",
+                        }}
+                        onClick={() => reset(item._id)}
+                      >
+                        {resetLoading ? "Prosess" : "Reset"}
+                      </Button>
+                    ) : null}
                   </Box>
                 </td>
               </tr>

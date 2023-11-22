@@ -51,7 +51,7 @@ const User = () => {
         height: "100vh",
       }}
     >
-      <Title title="User - Login" />
+      <Title title='User - Login' />
       {loading ? (
         <Loader />
       ) : (
@@ -64,9 +64,10 @@ const User = () => {
             }}
           >
             <img
-              src="https://cdni.iconscout.com/illustration/premium/thumb/admin-control-panel-4487949-3722637.png"
-              alt="admin"
+              src='https://cdni.iconscout.com/illustration/premium/thumb/admin-control-panel-4487949-3722637.png'
+              alt='admin'
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              loading='lazy'
             />
           </Box>
           <Box
@@ -93,25 +94,25 @@ const User = () => {
               <TextField
                 sx={{ m: 2 }}
                 fullWidth
-                label="username"
+                label='username'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
 
               <TextField
                 sx={{ m: 2 }}
-                type="password"
+                type='password'
                 fullWidth
-                label="password"
+                label='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
 
               <Button
                 fullWidth
-                variant="contained"
-                color="success"
-                type="submit"
+                variant='contained'
+                color='success'
+                type='submit'
               >
                 Masuk
               </Button>

@@ -77,6 +77,7 @@ const Add = ({ open, close }) => {
   const [essay, setEssay] = useState("");
   const [passing, setPassing] = useState("");
   const [display, setDisplay] = useState("");
+  const [remed, setRemed] = useState("");
 
   useEffect(() => {
     const initialDate = setHours(setMinutes(new Date(), 0), 9);
@@ -102,6 +103,7 @@ const Add = ({ open, close }) => {
       essay: essay,
       passing: passing,
       display: display,
+      remedial: remed,
     };
 
     dispatch(createExam(data));
@@ -121,6 +123,7 @@ const Add = ({ open, close }) => {
       setEssay("0");
       setPassing("");
       setDisplay("");
+      setRemed("");
 
       dispatch({ type: CREATE_EXAM_RESET });
 
@@ -208,6 +211,18 @@ const Add = ({ open, close }) => {
                   value={display}
                   label=' --Tampil Nilai--'
                   onChange={(e) => setDisplay(e.target.value)}
+                >
+                  <MenuItem value='yes'>Ya</MenuItem>
+                  <MenuItem value='no'>Tidak</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl required fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Remedial</InputLabel>
+                <Select
+                  value={remed}
+                  label='Remedial'
+                  onChange={(e) => setRemed(e.target.value)}
                 >
                   <MenuItem value='yes'>Ya</MenuItem>
                   <MenuItem value='no'>Tidak</MenuItem>

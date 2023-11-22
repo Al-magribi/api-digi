@@ -13,6 +13,7 @@ import Time from "../Dashboard/Time";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CREATE_MY_ANSWER_RESET } from "../../../Redux/Answer/answer_const";
+import { RESET_USER } from "../../../Redux/Exam/exam_const";
 
 const User_CBT = () => {
   User_Protection();
@@ -21,6 +22,7 @@ const User_CBT = () => {
 
   const { userInfo: user } = useSelector((state) => state.userLogin);
   const { error, success, message } = useSelector((state) => state.newAnswer);
+  const { resetLoading, reset, resetMsg } = useSelector((state) => state.reset);
 
   useEffect(() => {
     dispatch(getStudentsExam(user?.grade));
@@ -44,7 +46,17 @@ const User_CBT = () => {
     } else {
       toast.error(error);
     }
-  }, [success, message, error]);
+
+    if (reset) {
+      window.location.reload();
+
+      dispatch({ type: RESET_USER });
+    } else {
+      toast.error(resetMsg);
+
+      dispatch({ type: RESET_USER });
+    }
+  }, [success, message, error, reset, resetMsg, user, dispatch]);
 
   return (
     <Box
@@ -56,7 +68,7 @@ const User_CBT = () => {
         flexDirection: "column",
       }}
     >
-      <Title title="Siswa - CBT" />
+      <Title title='Siswa - CBT' />
 
       <Navbar />
 

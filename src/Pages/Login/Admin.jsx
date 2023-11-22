@@ -44,7 +44,7 @@ const Admin = () => {
         height: "100vh",
       }}
     >
-      <Title title="Admin - Login" />
+      <Title title='Admin - Login' />
 
       {loading ? (
         <Loader />
@@ -58,9 +58,10 @@ const Admin = () => {
             }}
           >
             <img
-              src="https://cdni.iconscout.com/illustration/premium/thumb/admin-services-4500540-3804451.png"
-              alt="admin"
+              src='https://cdni.iconscout.com/illustration/premium/thumb/admin-services-4500540-3804451.png'
+              alt='admin'
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              loading='lazy'
             />
           </Box>
           <Box
@@ -85,28 +86,28 @@ const Admin = () => {
               }}
             >
               <TextField
-                type="text"
+                type='text'
                 sx={{ m: 2 }}
                 fullWidth
-                label="username"
+                label='username'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
 
               <TextField
-                type="password"
+                type='password'
                 sx={{ m: 2 }}
                 fullWidth
-                label="password"
+                label='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
 
               <Button
-                type="submit"
+                type='submit'
                 fullWidth
-                variant="contained"
-                color="success"
+                variant='contained'
+                color='success'
               >
                 Masuk
               </Button>
