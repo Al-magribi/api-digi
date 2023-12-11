@@ -37,7 +37,11 @@ export const createAnswer = (answer) => async (dispatch) => {
 
     dispatch({ type: CREATE_MY_ANSWER_SUCCESS, payload: data.message });
   } catch (error) {
-    dispatch({ type: CREATE_MY_ANSWER_FAIL, payload: error.message });
+    console.log(error);
+    dispatch({
+      type: CREATE_MY_ANSWER_FAIL,
+      payload: error.response.data.message,
+    });
   }
 };
 
